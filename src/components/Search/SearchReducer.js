@@ -1,4 +1,4 @@
-import { STORE_SEARCH_INPUT } from "../../constants/actionTypes";
+import * as types from "../../constants/actionTypes";
 
 const SearchReducer = (
   state = {
@@ -7,10 +7,28 @@ const SearchReducer = (
   action
 ) => {
   switch (action.type) {
-    case STORE_SEARCH_INPUT:
+    case types.STORE_SEARCH_INPUT:
       return {
         ...state,
         storedSearchInput: action.searchInput
+      };
+    case types.BATCH_DOWNLOAD_FULFILLED:
+      return {
+        ...state,
+        isLoading: false,
+        hasError: false
+      };
+    case types.BATCH_DOWNLOAD_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false
+      };
+    case types.BATCH_DOWNLOAD_REJECTED:
+      return {
+        ...state,
+        isLoading: false,
+        hasError: true
       };
     default:
       return state;

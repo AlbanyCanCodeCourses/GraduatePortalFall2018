@@ -31,8 +31,9 @@ const upload = (url, image = null, method = "PUT") => {
 };
 
 
-// Login, Fetch All Profiles, New & Edit Profile use the "send" AJAX call
-// ----------------------------------------------------------------------
+// Login, Fetch All Profiles, Batch Download, 
+// New & Edit Profile use the "send" AJAX call
+// -------------------------------------------
 export const loginRequest = (username, password) => {
   return send(`${api}/login`, {
     username,
@@ -57,6 +58,12 @@ export const fetchProfilesNewRequest = profileData => {
 export const fetchProfileEditRequest = profileData => {
   return send(`${api}/graduates/edit`, profileData, "PUT").then(response => {
     if (response.token) localStorage.token = response.token;
+    return response;
+  });
+};
+
+export const batchDownloadRequest = resumes => {
+  return send(`${api}/download/resume`, resumes).then(response => {
     return response;
   });
 };

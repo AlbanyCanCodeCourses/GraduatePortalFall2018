@@ -133,3 +133,9 @@ header h1 {
   color: #00b5e0;
   text-decoration: none;
 }
+.search .checkbox label {
+  color: #868686;
+}
+.search .checkbox {
+  margin-top: 0;
+}
