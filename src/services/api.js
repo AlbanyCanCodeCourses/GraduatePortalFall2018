@@ -63,7 +63,7 @@ export const fetchProfileEditRequest = profileData => {
 };
 
 export const batchDownloadRequest = resumes => {
-  return send(`${api}/download/resume`, resumes).then(response => {
+  return send(`${api}/download/resumes`, resumes).then(response => {
     return response;
   });
 };
