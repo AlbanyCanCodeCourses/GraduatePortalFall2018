@@ -1,5 +1,5 @@
 import * as types from "../../constants/actionTypes";
-import { fetchAllProfilesRequest } from "../../services/api";
+import { fetchAllProfilesRequest, batchDownloadRequest } from "../../services/api";
 
 export const fetchAllProfiles = () => {
   return {
@@ -14,3 +14,11 @@ export const storeSearchInput = (searchInput) => {
     searchInput
   };
 };
+
+export const batchDownload = (resumes) => {
+  const resumesForJSON = { urls: resumes }
+  return {
+    type: types.BATCH_DOWNLOAD,
+    payload: batchDownloadRequest(resumesForJSON)
+  }
+}

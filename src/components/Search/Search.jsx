@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, FormControl, Button, Media, Image } from "react-bootstrap";
+import { FormGroup, FormControl, Button, Media, Image, Checkbox } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 
@@ -12,6 +12,7 @@ class Search extends Component {
   state = {
     searchInput: "",
     profiles: null, //local state after getting from store
+    resumes: [],
     profileData: {
       _id: null,
       firstName: "",
@@ -33,6 +34,29 @@ class Search extends Component {
   handleChange = e => {
     this.setState({ searchInput: e.target.value }, () => this.filterProfiles());
   };
+
+  handleCheckbox = (e, resume) => {
+    if (e.target.checked) {
+      if (!this.state.resumes.includes(resume)) {
+        const newResumes = this.state.resumes.concat(resume);
+        this.setState({
+          resumes: newResumes
+        });
+      }
+    } else {
+      if (this.state.resumes.includes(resume)) {
+        const newResumes = this.state.resumes.filter(batchResume => batchResume !== resume);
+        this.setState({
+          resumes: newResumes
+        });
+      }
+    }
+  }
+
+  handleBatchDownload = e => {
+    e.target.blur();
+    this.props.batchDownload(this.state.resumes);
+  }
 
   handleActivation = (e, id) => {
     e.target.blur();
@@ -143,6 +167,16 @@ class Search extends Component {
           <header className="container grad-header">
             <div className="search-headline">
               <h1>Graduate Portal</h1>
+
+              {/* Batch Download Button */}
+                <Button
+                  className="grad-btn grad-btn-secondary download-btn"
+                  title="Download selected resumes"
+                  bsSize="small"
+                  onClick={e => this.handleBatchDownload(e)}
+                >
+                  <i className="fas fa-arrow-down"></i>
+                </Button>
 
               {/* Add Profile Button */}
               {this.props.isAdmin && (
@@ -345,11 +379,19 @@ class Search extends Component {
                             </Button>
                           </LinkContainer>
                         )}
+
+                        {/* Batch Resume Download Checkbox */}
+                        {graduate.resume && (
+                          <Checkbox 
+                            onChange={e => this.handleCheckbox(e, graduate.resume)}
+                            readOnly >
+                            Include this graduate's resume in a batch download.
+                          </Checkbox>
+                        )}
                       </Media.Body>
                     </Media>
                   </div>
                 );
-                
               })
             )}
           </div>
