@@ -94,8 +94,21 @@ class NewUsers extends Component {
     } else if (numberOfAts - numberOfCommas !== 1) {
       this.inputErrorNotify();
     } else {
-      //alert it went ok
       this.setState({ showModal: false });
+
+      const { dataToSend } = this.state;
+      dataToSend.emails = [...trimmedArray];
+
+      this.setState(
+        {
+          dataToSend
+        },
+        () => console.log("this is saved Emails", this.state.dataToSend)
+      );
+
+      this.setState({
+        serverResponse: this.createNewUsers(this.state.dataToSend)
+      });
       //submitEmails(trimmedArray);
     }
   };
