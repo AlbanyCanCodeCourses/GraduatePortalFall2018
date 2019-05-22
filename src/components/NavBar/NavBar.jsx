@@ -36,7 +36,7 @@ class NavBar extends Component {
                 </LinkContainer>
 
                 <NavItem
-                  className="new-user"
+                  className="acc-link"
                   eventKey={3}
                   onClick={() =>
                     this.setState({ toggleNewUser: !this.state.toggleNewUser })
