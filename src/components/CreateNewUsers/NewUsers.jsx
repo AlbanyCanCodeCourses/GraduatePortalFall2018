@@ -41,7 +41,7 @@ class NewUsers extends Component {
     this.setState({ showModal: true });
   };
 
-  notify = () => toast("Thank you!", { type: toast.TYPE.SUCCESS });
+  notify = () => toast("Success! Thank you!", { type: toast.TYPE.SUCCESS });
 
   errorNotify = () =>
     toast("Something went wrong.", { type: toast.TYPE.ERROR });
@@ -51,6 +51,9 @@ class NewUsers extends Component {
       "Please check your input. Make sure each email address is separated by a comma.",
       { type: toast.TYPE.WARNING }
     );
+
+  serverNotify = () =>
+    toast("Sending new user information to server.", { autoClose: 2000 });
 
   handleInput = e => {
     this.setState({ emailInput: e.target.value });
@@ -75,6 +78,7 @@ class NewUsers extends Component {
     }
 
     if (trimmedArray.length === 1 && numberOfAts === 1) {
+      this.serverNotify();
       this.setState({ showModal: false });
 
       const { dataToSend } = this.state;
@@ -94,8 +98,22 @@ class NewUsers extends Component {
     } else if (numberOfAts - numberOfCommas !== 1) {
       this.inputErrorNotify();
     } else {
-      //alert it went ok
+      this.serverNotify();
       this.setState({ showModal: false });
+
+      const { dataToSend } = this.state;
+      dataToSend.emails = [...trimmedArray];
+
+      this.setState(
+        {
+          dataToSend
+        },
+        () => console.log("this is saved Emails", this.state.dataToSend)
+      );
+
+      this.setState({
+        serverResponse: this.createNewUsers(this.state.dataToSend)
+      });
       //submitEmails(trimmedArray);
     }
   };
